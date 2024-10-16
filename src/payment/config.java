@@ -2,6 +2,7 @@
 package payment;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +13,17 @@ import java.sql.SQLException;
  */
 public class config {
     
+    public static Connection connectDB() {
+        Connection con = null;
+        try {
+            Class.forName("org.sqlite.JDBC"); // Load the SQLite JDBC driver
+            con = DriverManager.getConnection("jdbc:sqlite:PaymentMethod.db"); // Establish connection
+            System.out.println("Connection Successful");
+        } catch (Exception e) {
+            System.out.println("Connection Failed: " + e);
+        }
+        return con;
+    }
     public void addPayment(String sql, Object... values) {
     try (Connection conn = this.connectDB();
          PreparedStatement pstmt = conn.prepareStatement(sql)) {
